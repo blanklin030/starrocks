@@ -2551,4 +2551,16 @@ public class AlterTest {
             }
         }
     }
+
+
+    @Test
+    public void testCatalogAddComplexColumns() throws Exception {
+        String stmt = "alter table test.tbl1 add column ("
+                + "`col1` array<string> not null,"
+                + "`col2` json not null" +
+                ");";
+        AlterTableStmt alterTableStmt = (AlterTableStmt) UtFrameUtils.parseStmtWithNewParser(stmt, starRocksAssert.getCtx());
+        AddColumnsClause clause = (AddColumnsClause) alterTableStmt.getOps().get(0);
+        Assert.assertEquals(null, clause.getRollupName());
+    }
 }
