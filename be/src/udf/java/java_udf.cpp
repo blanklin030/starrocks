@@ -96,6 +96,7 @@ void JVMFunctionHelper::_init() {
     _exception_util_class = JNI_FIND_CLASS("org/apache/commons/lang3/exception/ExceptionUtils");
 
     CHECK(_object_class);
+    CHECK(_object_array_class);
     CHECK(_string_class);
     CHECK(_jarrays_class);
     CHECK(_list_class);
@@ -154,6 +155,8 @@ void JVMFunctionHelper::_init() {
     _get_boxed_result =
             _env->GetStaticMethodID(_udf_helper_class, "getResultFromBoxedArray", "(IILjava/lang/Object;J)V");
     _direct_buffer_class = JNI_FIND_CLASS("java/nio/ByteBuffer");
+    DCHECK(_direct_buffer_class != nullptr);
+
     _direct_buffer_clear = _env->GetMethodID(_direct_buffer_class, "clear", "()Ljava/nio/Buffer;");
     DCHECK(_batch_call);
     DCHECK(_batch_call_no_args);
@@ -169,6 +172,8 @@ void JVMFunctionHelper::_init() {
 
     name = JVMFunctionHelper::to_jni_class_name(UDAFStateList::clazz_name);
     jclass loaded_clazz = JNI_FIND_CLASS(name.c_str());
+    DCHECK(loaded_clazz != nullptr);
+
     _function_states_clazz = new JVMClass(std::move(loaded_clazz));
 }
 
